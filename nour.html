@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nour</title>
+  <style>
+    body {
+      font-family: "Comic Sans MS", "Poppins", sans-serif;
+      background: linear-gradient(#c6f7d1, #eafff0);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      text-align: center;
+      border: 15px solid #7ccf96;
+      border-radius: 20px;
+      overflow-x: hidden;
+    }
+    h1 {
+      font-size: 32px;
+      color: #2b7a44;
+      margin-bottom: 10px;
+    }
+    .frog {
+      font-size: 90px;
+      cursor: pointer;
+      animation: bounce 1.5s infinite ease-in-out;
+      user-select: none;
+      transition: 0.2s;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+    .fly {
+      position: absolute;
+      font-size: 30px;
+      cursor: pointer;
+      animation: buzz 2s infinite ease-in-out;
+    }
+    @keyframes buzz {
+      0%, 100% { transform: translateX(0) translateY(0); }
+      50% { transform: translateX(20px) translateY(-10px); }
+    }
+    .heart {
+      position: absolute;
+      font-size: 25px;
+      animation: floatUp 1s ease-out forwards;
+    }
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-40px); }
+    }
+    #task {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #2b7a44;
+      display: none;
+    }
+    #revealBtn {
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      background: #2b7a44;
+      color: white;
+      border-radius: 10px;
+      display: none;
+      transition: 0.2s;
+    }
+    #revealBtn:hover {
+      background: #3e9d59;
+    }
+    #message {
+      margin-top: 20px;
+      font-size: 18px;
+      display: none;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 340px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      animation: letterPop 0.6s ease;
+      white-space: pre-wrap;
+    }
+    @keyframes letterPop {
+      0% { transform: scale(0.4); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <h1>🐸 Frog Adventure 🐸</h1>
+  <p>Help the frog catch 3 flies to unlock your surprise!</p>
+
+  <div class="frog" id="frog">🐸</div>
+  <div id="task"></div>
+  <button id="revealBtn">Reveal Surprise</button>
+  <div id="message">i was honestly really bummed when i heard that i couldn't BUY you a gift since it made showing you affection that much harder but that doesn't mean ill js give up. you're one of the most confusing yet best things 2 ever happen to me. i honestly dont know what i would do without you. if not for you i dont think i would have been able to learn to love myself which is one thing i never thought id be able to do. to say that youve had a big impact on me n my life would be a huge understatement. i dont want to drag this on too long cause i know ure busy but i just wanted to say that despite how weird i view our relationship dynamic to be and how lost i feel sometimes, i genuinely do appreciate u tons and im really excited 2 see what the future has in store for us. i for one am expecting great things. ure a great person with very rare qualities u dont find in many people these days.to this day i still find how nice and forgiving you are perplexing. i love you very very much nour. keep being yourself and stop being so hard on urself ure doing great !!</div>
+
+  <script>
+    const frog = document.getElementById("frog");
+    const task = document.getElementById("task");
+    const revealBtn = document.getElementById("revealBtn");
+    const message = document.getElementById("message");
+
+    const ribbit = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-cartoon-frog-cry-2215.mp3");
+
+    let fliesCaught = 0;
+
+    function setFrog() { return; }
+
+    function makeHeart(x, y) {
+      const heart = document.createElement("div");
+      heart.textContent = "💚";
+      heart.classList.add("heart");
+      heart.style.left = x + "px";
+      heart.style.top = y + "px";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 1000);
+    }
+
+    function spawnFly() {
+      const fly = document.createElement("div");
+      fly.textContent = "🪰";
+      fly.classList.add("fly");
+      fly.style.top = Math.random() * 70 + 20 + "%";
+      fly.style.left = Math.random() * 70 + 10 + "%";
+      document.body.appendChild(fly);
+
+      fly.addEventListener("click", (e) => {
+        ribbit.play();
+        fliesCaught++;
+        makeHeart(e.clientX, e.clientY);
+        fly.remove();
+
+        task.style.display = "block";
+        task.textContent = `Flies caught: ${fliesCaught} / 3`;
+
+        if (fliesCaught < 3) spawnFly();
+        if (fliesCaught === 3) {
+          task.textContent = "Great job! Click below!";
+          revealBtn.style.display = "inline-block";
+        }
+      });
+    }
+
+    spawnFly();
+
+    revealBtn.addEventListener("click", () => {
+      message.style.display = "block";
+      revealBtn.style.display = "none";
+    });
+  </script>
+</body>
+</html>
